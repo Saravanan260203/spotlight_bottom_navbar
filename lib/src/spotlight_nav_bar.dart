@@ -1,37 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A customizable bottom navigation widget with a spotlight effect.
+///
+/// The `SpotlightBottomNav` widget allows you to create a bottom navigation bar
+/// with a spotlight effect for the active icon.
+///
+/// - `spotlightColor`: The highlight color for the active icon.
+/// - `bottomNavCount`: The number of navigation items (must be 3, 4, or 5).
+/// - `icons`: A list of icons for the navigation bar (length must match `bottomNavCount`).
+/// - `onPageChanged`: A callback function triggered when the page changes.
+/// - `pages`: A list of widgets corresponding to each navigation item.
 class SpotlightBottomNav extends StatefulWidget {
+  /// The highlight color for the active icon.
   final Color spotlightColor;
+
+  /// The number of navigation items. Must be 3, 4, or 5.
   final int bottomNavCount;
+
+  /// A list of icons for the navigation bar. Length must match `bottomNavCount`.
   final List<IconData> icons;
+
+  /// A callback function triggered when the page changes.
   final Function(int)? onPageChanged;
+
+  /// A list of widgets corresponding to each navigation item.
   final List<Widget> pages;
 
-  /// A customizable bottom navigation widget.
+  /// Creates a `SpotlightBottomNav` widget.
   ///
-  /// - `spotlightColor`: The highlight color for the active icon.
-  /// - `bottomNavCount`: The number of navigation items (must be 3, 4, or 5).
-  /// - `icons`: List of icons for the navigation bar (length must match `bottomNavCount`).
-  /// - `onPageChanged`: Callback function for page changes.
-  const SpotlightBottomNav(
-      {super.key,
-      required this.spotlightColor,
-      required this.bottomNavCount,
-      required this.icons,
-      this.onPageChanged,
-      required this.pages})
-      : assert(
-            bottomNavCount == 3 || bottomNavCount == 4 || bottomNavCount == 5,
-            "BottomNavCount must be either 3, 4, or 5."),
-        assert(icons.length == bottomNavCount,
-            "The number of icons must match bottomNavCount.");
+  /// Throws an [AssertionError] if:
+  /// - `bottomNavCount` is not 3, 4, or 5.
+  /// - The length of `icons` does not match `bottomNavCount`.
+  const SpotlightBottomNav({
+    super.key,
+    required this.spotlightColor,
+    required this.bottomNavCount,
+    required this.icons,
+    this.onPageChanged,
+    required this.pages,
+  });
 
   @override
-  _SpotlightBottomNavState createState() => _SpotlightBottomNavState();
+  SpotlightBottomNavState createState() => SpotlightBottomNavState();
 }
 
-class _SpotlightBottomNavState extends State<SpotlightBottomNav> {
+class SpotlightBottomNavState extends State<SpotlightBottomNav> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
   @override
@@ -102,7 +116,7 @@ class _SpotlightBottomNavState extends State<SpotlightBottomNav> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: List.generate(widget.bottomNavCount, (index) {
-                    return _BottomNavButton(
+                    return BottomNavButton(
                       icon: widget.icons[index],
                       index: index,
                       currentIndex: _currentIndex,
@@ -141,9 +155,12 @@ class _SpotlightBottomNavState extends State<SpotlightBottomNav> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              widget.spotlightColor.withOpacity(0.6),
-                              widget.spotlightColor.withOpacity(0.3),
-                              widget.spotlightColor.withOpacity(0.1),
+                              widget.spotlightColor
+                                  .withAlpha((0.6 * 255).toInt()),
+                              widget.spotlightColor
+                                  .withAlpha((0.3 * 255).toInt()),
+                              widget.spotlightColor
+                                  .withAlpha((0.1 * 255).toInt()),
                               Colors.transparent,
                             ],
                           ),
@@ -192,13 +209,13 @@ class _SpotlightBottomNavState extends State<SpotlightBottomNav> {
   }
 }
 
-class _BottomNavButton extends StatelessWidget {
+class BottomNavButton extends StatelessWidget {
   final IconData icon;
   final int index;
   final int currentIndex;
   final Function(int) onPressed;
 
-  const _BottomNavButton({
+  const BottomNavButton({
     super.key,
     required this.icon,
     required this.index,

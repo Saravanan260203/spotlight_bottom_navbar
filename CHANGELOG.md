@@ -1,4 +1,4 @@
-## 0.0.1
+## 0.0.6
 
 * Initial release of the `SpotlightBottomNav` package.
 * Provides a customizable bottom navigation bar with spotlight effect.
